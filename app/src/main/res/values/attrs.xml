@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EditTextView">
+        <attr name="editTextHint" format="string"/>
+        <attr name="editTextDrawableLeft" format="reference"/>
+        <attr name="editTextInputType" format="enum">
+            <enum name="textPersonName" value="0"/>
+            <enum name="textPassword" value="1"/>
+            <enum name="phone" value="2"/>
+            <enum name="textEmailAddress" value="3"/>
+            <enum name="numberSigned" value="4"/>
+            <enum name="date" value="5"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="ButtonView">
+        <attr name="buttonName" format="string"/>
+        <attr name="android:padding"/>
+    </declare-styleable>
+    <declare-styleable name="SpinnerView">
+        <!--<attr name="spinnerData" format="reference"/>-->
+        <attr name="android:entries"/>
+    </declare-styleable>
+</resources>

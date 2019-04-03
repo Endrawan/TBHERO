@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <com.tbhero.application.components.TextInputLayout
+            android:id="@+id/inputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/AppTheme.TextInputLayout">
+
+        <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                tools:hint="Email"
+                tools:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:drawablePadding="8dp"
+                tools:drawableLeft="@drawable/ic_user_grey_16dp"
+                tools:drawableStart="@drawable/ic_user_grey_16dp"
+                android:textColor="@color/edittext_selector"/>
+
+    </com.tbhero.application.components.TextInputLayout>
+</FrameLayout>

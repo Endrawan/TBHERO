@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "1081903312286",
+    "firebase_url": "https://tbhero-5b546.firebaseio.com",
+    "project_id": "tbhero-5b546",
+    "storage_bucket": "tbhero-5b546.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081903312286:android:a68b96cff13c712f",
+        "android_client_info": {
+          "package_name": "com.tbhero.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081903312286-fclirv86srndnlaqc8m3j0mlik43la26.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tbhero.application",
+            "certificate_hash": "175449022a24ce105bbae5e5599d2b8ab6a69e7a"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU3SUTqeFFFu1GWlFuaMaRMrq2dEb9iJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081903312286-m19unlbnpif8puclb85oagl3k2e7s9ch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

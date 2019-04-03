@@ -1,0 +1,60 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:fontFamily">@font/fonts</item>
+        <item name="android:textColor">@color/blackLight</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="AppTheme.Toolbar" parent="AppTheme">
+    </style>
+
+    <style name="AppTheme.Toolbar.White" parent="AppTheme.Toolbar">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="AppTheme.Toolbar.Primary" parent="AppTheme.Toolbar">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <!-- EditText -->
+    <style name="AppTheme.EditText" parent="AppTheme">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+
+    <!-- TextInputLayout -->
+    <style name="AppTheme.TextInputLayout" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColor">@color/blackHeavy</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+    <!-- TextView -->
+    <style name="AppTheme.TextView" parent="AppTheme">
+    </style>
+
+    <style name="AppTheme.TextView.Title" parent="AppTheme.TextView">
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/roboto_semi_bold</item>
+        <item name="android:textColor">@color/blackHeavy</item>
+    </style>
+
+    <style name="AppTheme.TextView.Subtitle" parent="AppTheme.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/blackLight</item>
+    </style>
+
+    <style name="AppTheme.TextView.White" parent="AppTheme.TextView">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+</resources>

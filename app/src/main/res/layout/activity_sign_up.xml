@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.SignUpActivity">
+
+    <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+            <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTheme.TextView.Title"
+                    android:text="Sign up to TBHERO"
+                    android:layout_marginBottom="16dp"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Kategori Pengguna"
+                    android:layout_marginBottom="4dp"/>
+
+            <com.tbhero.application.components.SpinnerView
+                    android:id="@+id/category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/category"
+                    android:layout_marginBottom="8dp"/>
+
+            <com.tbhero.application.components.EditTextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextInputType="textPersonName"
+                    app:editTextHint="Nama"
+                    app:editTextDrawableLeft="@drawable/ic_user_grey_16dp"
+                    android:layout_marginBottom="8dp"/>
+
+            <com.tbhero.application.components.EditTextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextInputType="date"
+                    app:editTextHint="Tanggal Lahir"
+                    app:editTextDrawableLeft="@drawable/ic_confetti_grey_16dp"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
+
+            <com.tbhero.application.components.EditTextView
+                    android:id="@+id/weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextInputType="numberSigned"
+                    app:editTextHint="Berat Badan"
+                    app:editTextDrawableLeft="@drawable/ic_weight_grey_16dp"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PMD"
+                    android:layout_marginBottom="4dp"
+                    android:visibility="gone"/>
+
+            <com.tbhero.application.components.SpinnerView
+                    android:id="@+id/pmd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/pmd"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Puskesmas"
+                    android:layout_marginBottom="4dp"/>
+
+            <com.tbhero.application.components.SpinnerView
+                    android:id="@+id/puskesmas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/puskesmas"
+                    android:layout_marginBottom="8dp"/>
+
+            <com.tbhero.application.components.EditTextView
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextDrawableLeft="@drawable/ic_phone_grey_16dp"
+                    app:editTextHint="Nomor Telepon"
+                    app:editTextInputType="phone"
+                    android:layout_marginBottom="8dp"/>
+
+            <com.tbhero.application.components.EditTextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextDrawableLeft="@drawable/ic_mail_grey_16dp"
+                    app:editTextHint="Email"
+                    app:editTextInputType="textEmailAddress"
+                    android:layout_marginBottom="8dp"/>
+
+            <com.tbhero.application.components.EditTextView
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextDrawableLeft="@drawable/ic_password_grey_16dp"
+                    app:editTextHint="Password"
+                    app:editTextInputType="textPassword"
+                    android:layout_marginBottom="8dp"/>
+
+            <com.tbhero.application.components.EditTextView
+                    android:id="@+id/confirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextDrawableLeft="@drawable/ic_password_grey_16dp"
+                    app:editTextHint="Confirm Password"
+                    app:editTextInputType="textPassword"
+                    android:layout_marginBottom="16dp"/>
+
+            <com.tbhero.application.components.ButtonView
+                    android:id="@+id/signUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:buttonName="Sign Up"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

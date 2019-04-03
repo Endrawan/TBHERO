@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">TBHERO</string>
+    <string-array name="category">
+        <item>Supervisi</item>
+        <item>PMO</item>
+        <item>Pasien</item>
+    </string-array>
+    <string-array name="puskesmas">
+        <item>Puskesmas Polowijen</item>
+        <item>Puskesmas Brawijaya</item>
+        <item>Puskesmas Padjajaran</item>
+        <item>Puskesmas Singaparna</item>
+    </string-array>
+    <string-array name="pmd">
+        <item>Lil Pump</item>
+        <item>21 Savage</item>
+        <item>PewPewPew</item>
+        <item>Anuel Aa</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
