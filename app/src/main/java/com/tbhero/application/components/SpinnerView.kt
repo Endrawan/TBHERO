@@ -3,8 +3,10 @@ package com.tbhero.application.components
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
+import android.widget.Spinner
 import com.tbhero.application.R.layout.view_spinner
 import com.tbhero.application.R.styleable.SpinnerView
 import com.tbhero.application.R.styleable.SpinnerView_android_entries
@@ -24,14 +26,28 @@ class SpinnerView(context: Context, attrs: AttributeSet?) : FrameLayout(context,
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(view_spinner, this, true)
 
-        val adapter = ArrayAdapter<CharSequence>(
-            context,
-            android.R.layout.simple_spinner_item,
-            entries
-        )
+        if (entries != null) {
+            val adapter = ArrayAdapter<CharSequence>(
+                context,
+                android.R.layout.simple_spinner_item,
+                entries
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+    }
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    fun getSpinner(): Spinner {
+        return spinner
+    }
 
-        spinner.adapter = adapter
+    fun showProgress() {
+        cardView.visibility = View.INVISIBLE
+        progressBar.visibility = View.VISIBLE
+    }
+
+    fun hideProgress() {
+        cardView.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
     }
 }

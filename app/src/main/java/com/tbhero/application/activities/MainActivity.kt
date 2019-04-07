@@ -1,11 +1,14 @@
 package com.tbhero.application.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import com.tbhero.application.R
 import com.tbhero.application.adapters.MainPagerAdapter
+import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.fragments.ChatFragment
 import com.tbhero.application.fragments.ProfileFragment
 import com.tbhero.application.fragments.ReminderFragment
@@ -47,5 +50,21 @@ class MainActivity : AppCompatActivity() {
             tab.setCompoundDrawablesWithIntrinsicBounds(0, icons[i], 0, 0)
             tabLayout.getTabAt(i)?.customView = tab
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.logout -> {
+                logout()
+                startActivity(Intent(this, SignInActivity::class.java))
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

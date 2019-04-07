@@ -30,4 +30,14 @@ class ButtonView(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
     override fun setOnClickListener(listener: OnClickListener) {
         button.setOnClickListener { listener.onClick(button) }
     }
+
+    fun showProgress() {
+        progressBar.visibility = android.view.View.VISIBLE
+        cardView.visibility = android.view.View.INVISIBLE
+    }
+
+    fun hideProgress() {
+        progressBar.visibility = android.view.View.GONE
+        cardView.visibility = android.view.View.VISIBLE
+    }
 }
