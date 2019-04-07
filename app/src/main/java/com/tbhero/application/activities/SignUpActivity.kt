@@ -115,7 +115,8 @@ class SignUpActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 Log.d(TAG, "signInWithEmail:success")
                 user.id = auth.currentUser?.uid
-                db.users.child(user.pmoId!!).child("pasienId").setValue(user.id)
+                if (user.category == User.USER_CATEGORY_PASIEN)
+                    db.users.child(user.pmoId!!).child("pasienId").setValue(user.id)
                 db.users.child(user.id!!).setValue(user).addOnCompleteListener {
                     if (it.isSuccessful) {
                         writeUserToSP(user)

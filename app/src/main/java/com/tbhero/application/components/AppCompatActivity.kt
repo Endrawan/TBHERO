@@ -19,9 +19,9 @@ open class AppCompatActivity : AppCompatActivity() {
     private val TAG = "AppCompatActivity"
     protected val auth = FirebaseAuth.getInstance()
     protected var firebaseUser = auth.currentUser
-    protected var user: User = User()
-    protected val db = Database()
-    protected val gson = Gson()
+    var user: User = User()
+    val db = Database()
+    val gson = Gson()
     protected lateinit var SP: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {

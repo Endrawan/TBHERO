@@ -9,9 +9,10 @@ import android.view.ViewGroup
 import com.tbhero.application.R.drawable.ic_arrow_down_grey_24dp
 import com.tbhero.application.R.drawable.ic_arrow_up_grey_24dp
 import com.tbhero.application.R.layout.item_linear_user
+import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.item_linear_user.view.*
 
-class UsersAdapter(private val data: Array<String>, private val action: (String) -> Unit) :
+class UsersAdapter(private val users: MutableList<User>, private val action: (User) -> Unit) :
     RecyclerView.Adapter<UsersAdapter.UserViewHolder>() {
 
     private lateinit var ctx: Context
@@ -20,9 +21,9 @@ class UsersAdapter(private val data: Array<String>, private val action: (String)
 
         var isExpanded: Boolean = false
 
-        fun bindItem(ctx: Context, data: String, action: (String) -> Unit) {
-            itemView.name.text = data
-            itemView.setOnClickListener { action(data) }
+        fun bindItem(ctx: Context, user: User, action: (User) -> Unit) {
+            itemView.name.text = user.name
+            itemView.setOnClickListener { action(user) }
             itemView.expand.setOnClickListener {
                 if (isExpanded) {
                     itemView.expanded_menu.visibility = View.GONE
@@ -48,9 +49,9 @@ class UsersAdapter(private val data: Array<String>, private val action: (String)
         )
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = users.size
 
     override fun onBindViewHolder(holder: UserViewHolder, p1: Int) {
-        holder.bindItem(ctx, data[p1], action)
+        holder.bindItem(ctx, users[p1], action)
     }
 }

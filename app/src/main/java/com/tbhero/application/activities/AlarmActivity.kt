@@ -1,14 +1,16 @@
 package com.tbhero.application.activities
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.widget.TextView
 import com.tbhero.application.R
 import com.tbhero.application.R.layout.activity_alarm
 import com.tbhero.application.adapters.MainPagerAdapter
+import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.fragments.AlarmsFragment
 import com.tbhero.application.fragments.ProfileFragment
+import com.tbhero.application.models.Config
+import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.activity_alarm.*
 
 class AlarmActivity : AppCompatActivity() {
@@ -19,10 +21,13 @@ class AlarmActivity : AppCompatActivity() {
         R.drawable.ic_reminder_white_24dp,
         R.drawable.ic_user_white_24dp
     )
+    lateinit var patient: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(activity_alarm)
+
+        patient = gson.fromJson(intent.getStringExtra(Config.ARGS_PATIENT), User::class.java)
 
         initToolbar()
         initTabLayout()

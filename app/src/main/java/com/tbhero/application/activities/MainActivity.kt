@@ -11,7 +11,7 @@ import com.tbhero.application.adapters.MainPagerAdapter
 import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.fragments.ChatFragment
 import com.tbhero.application.fragments.ProfileFragment
-import com.tbhero.application.fragments.ReminderFragment
+import com.tbhero.application.fragments.supervisi.ReminderFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 

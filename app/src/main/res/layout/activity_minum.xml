@@ -39,7 +39,7 @@
                     android:layout_marginBottom="4dp"/>
 
             <com.tbhero.application.components.SpinnerView
-                    android:id="@+id/drugCategory"
+                    android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/category"
@@ -52,6 +52,74 @@
                     android:timePickerMode="spinner"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                    android:id="@+id/repeatOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <CheckBox
+                            android:id="@+id/monday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Senin"/>
+
+                    <CheckBox
+                            android:id="@+id/tuesday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Selasa"/>
+
+                    <CheckBox
+                            android:id="@+id/wednesday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Rabu"/>
+
+                    <CheckBox
+                            android:id="@+id/thursday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Kamis"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <CheckBox
+                            android:id="@+id/friday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Jum'at"/>
+
+                    <CheckBox
+                            android:id="@+id/saturday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Sabtu"/>
+
+                    <CheckBox
+                            android:id="@+id/sunday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Minggu"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <com.tbhero.application.components.EditTextView
                     android:id="@+id/name"

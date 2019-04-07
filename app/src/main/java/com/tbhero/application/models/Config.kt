@@ -12,5 +12,8 @@ class Config {
 
         val PREFERENCE_FILE_KEY = "TBHERO"
         val SP_USER = "user"
+
+        val ARGS_PATIENT = "patient"
+        val ARGS_ALARM = "alarm"
     }
 }

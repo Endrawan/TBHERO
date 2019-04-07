@@ -10,10 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 import com.tbhero.application.R
+import com.tbhero.application.activities.AlarmActivity
 import com.tbhero.application.activities.MinumActivity
 import com.tbhero.application.activities.PeriksaActivity
 import com.tbhero.application.adapters.AlarmsAdapter
 import com.tbhero.application.components.Fragment
+import com.tbhero.application.models.Config
 import kotlinx.android.synthetic.main.fragment_alarms.*
 
 /**
@@ -34,11 +36,16 @@ class AlarmsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        val mAct = act as AlarmActivity
         drink.setOnClickListener {
-            startActivity(Intent(activity, MinumActivity::class.java))
+            val i = Intent(activity, MinumActivity::class.java)
+            i.putExtra(Config.ARGS_PATIENT, act.gson.toJson(mAct.patient))
+            startActivity(i)
         }
         check.setOnClickListener {
-            startActivity(Intent(activity, PeriksaActivity::class.java))
+            val i = Intent(activity, PeriksaActivity::class.java)
+            i.putExtra(Config.ARGS_PATIENT, act.gson.toJson(mAct.patient))
+            startActivity(i)
         }
     }
 
