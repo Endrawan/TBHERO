@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.tbhero.application.R.layout.item_linear_alarm
+import com.tbhero.application.models.Alarm
 import kotlinx.android.synthetic.main.item_linear_user.view.*
 
-class AlarmsAdapter(private val data: Array<String>, private val action: (String) -> Unit) :
+class AlarmsAdapter(internal val alarms: MutableList<Alarm>, private val action: (Alarm) -> Unit) :
     RecyclerView.Adapter<AlarmsAdapter.AlarmViewHolder>() {
 
     private lateinit var ctx: Context
@@ -16,9 +17,9 @@ class AlarmsAdapter(private val data: Array<String>, private val action: (String
     class AlarmViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
-        fun bindItem(ctx: Context, data: String, action: (String) -> Unit) {
-            itemView.name.text = data
-            itemView.setOnClickListener { action(data) }
+        fun bindItem(ctx: Context, alarm: Alarm, action: (Alarm) -> Unit) {
+            itemView.name.text = Alarm.CATEGORY_SUBJECTS[alarm.category!!]
+            itemView.setOnClickListener { action(alarm) }
         }
     }
 
@@ -34,9 +35,9 @@ class AlarmsAdapter(private val data: Array<String>, private val action: (String
         )
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = alarms.size
 
     override fun onBindViewHolder(holder: AlarmViewHolder, p1: Int) {
-        holder.bindItem(ctx, data[p1], action)
+        holder.bindItem(ctx, alarms[p1], action)
     }
 }

@@ -14,6 +14,7 @@ data class Alarm(
 
     companion object {
         val CATEGORY_FASE_FASE = arrayOf("Fase Awal", "Fase Lanjutan")
+        val CATEGORY_SUBJECTS = arrayOf("Minum Obat", "Minum Obat Lanjutan", "Beli Obat", "Periksa")
         const val CATEGORY_FASE_AWAL = 0
         const val CATEGORY_FASE_LANJUTAN = 1
         const val CATEGORY_BELI_OBAT = 2

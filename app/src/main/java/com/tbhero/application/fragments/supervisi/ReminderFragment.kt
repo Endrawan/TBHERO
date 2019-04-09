@@ -12,8 +12,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.tbhero.application.R
 import com.tbhero.application.activities.AlarmActivity
+import com.tbhero.application.adapters.AlarmsAdapter
 import com.tbhero.application.adapters.UsersAdapter
 import com.tbhero.application.components.Fragment
+import com.tbhero.application.models.Alarm
 import com.tbhero.application.models.Config
 import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.fragment_reminder.*
@@ -24,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_reminder.*
  */
 class ReminderFragment : Fragment() {
 
-    private val pasienList = mutableListOf<User>()
+    lateinit var patient: User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,10 +38,20 @@ class ReminderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+        initView()
     }
 
-    private fun initRecyclerView() {
+    private fun initView() {
+        when (act.user.category) {
+            User.USER_CATEGORY_SUPERVISI -> initSupervisi()
+            User.USER_CATEGORY_PMO -> initPMO()
+            User.USER_CATEGORY_PASIEN -> initPatient()
+        }
+
+    }
+
+    private fun initSupervisi() {
+        val pasienList = mutableListOf<User>()
         val adapter = UsersAdapter(pasienList) {
             val i = Intent(activity, AlarmActivity::class.java)
             i.putExtra(Config.ARGS_PATIENT, act.gson.toJson(it))
@@ -59,7 +71,77 @@ class ReminderFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-//                pmo.hideProgress()
+                toast("Gagal mengambil data")
+            }
+        })
+    }
+
+    private fun initPatient() {
+        patientMsg.visibility = View.VISIBLE
+
+        val alarms = mutableListOf<Alarm>()
+        val adapter = AlarmsAdapter(alarms) {
+            toast(it.category.toString())
+        }
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = adapter
+
+        act.db.alarms.child(act.user.id!!).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(data: DataSnapshot) {
+                alarms.clear()
+                for (snapshot in data.children) {
+                    val alarm = snapshot.getValue(Alarm::class.java)!!
+                    alarms.add(alarm)
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                toast("Gagal mengambil data")
+            }
+        })
+    }
+
+    private fun initPMO() {
+        lookProfile.setOnClickListener {
+
+        }
+        act.db.users.child(act.user.pasienId!!).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                toast("Gagal mengambil data")
+            }
+
+            override fun onDataChange(data: DataSnapshot) {
+                patient = data.getValue(User::class.java)!!
+
+                patientName.text = patient.name
+                pmoMsg.visibility = View.VISIBLE
+                initPMORecycelerView()
+            }
+
+        })
+
+    }
+
+    private fun initPMORecycelerView() {
+        val alarms = mutableListOf<Alarm>()
+        val adapter = AlarmsAdapter(alarms) {
+            toast(it.category.toString())
+        }
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = adapter
+
+        act.db.alarms.child(patient.id!!).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(data: DataSnapshot) {
+                alarms.clear()
+                for (snapshot in data.children) {
+                    val alarm = snapshot.getValue(Alarm::class.java)!!
+                    alarms.add(alarm)
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
                 toast("Gagal mengambil data")
             }
         })

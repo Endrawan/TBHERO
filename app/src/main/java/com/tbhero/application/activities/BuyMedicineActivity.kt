@@ -56,6 +56,7 @@ class BuyMedicineActivity : AppCompatActivity() {
 
     private fun saveAlarm() {
         medicineAlarm.name = patient.name
+        medicineAlarm.category = Alarm.CATEGORY_BELI_OBAT
         medicineAlarm.phaseCategory = phase.getSpinner().selectedItemPosition
         medicineAlarm.date = date.getTimeMills()
         medicineAlarm.dosage = quantity.getEditText().text.toString()
