@@ -12,6 +12,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.tbhero.application.R
 import com.tbhero.application.activities.AlarmActivity
+import com.tbhero.application.activities.BuyMedicineActivity
+import com.tbhero.application.activities.MinumActivity
+import com.tbhero.application.activities.PeriksaActivity
 import com.tbhero.application.adapters.AlarmsAdapter
 import com.tbhero.application.adapters.UsersAdapter
 import com.tbhero.application.components.Fragment
@@ -81,7 +84,7 @@ class ReminderFragment : Fragment() {
 
         val alarms = mutableListOf<Alarm>()
         val adapter = AlarmsAdapter(alarms) {
-            toast(it.category.toString())
+            setItemAction(it, act.user)
         }
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
@@ -126,7 +129,7 @@ class ReminderFragment : Fragment() {
     private fun initPMORecycelerView() {
         val alarms = mutableListOf<Alarm>()
         val adapter = AlarmsAdapter(alarms) {
-            toast(it.category.toString())
+            setItemAction(it, patient)
         }
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
@@ -147,5 +150,24 @@ class ReminderFragment : Fragment() {
         })
     }
 
+    private fun setItemAction(it: Alarm, patient: User) {
+        lateinit var i: Intent
+        when (it.category) {
+            Alarm.CATEGORY_PERIKSA -> {
+                i = Intent(act, PeriksaActivity::class.java)
+            }
+            Alarm.CATEGORY_FASE_LANJUTAN, Alarm.CATEGORY_FASE_AWAL -> {
+                i = Intent(act, MinumActivity::class.java)
+            }
+            Alarm.CATEGORY_BELI_OBAT -> {
+                i = Intent(act, BuyMedicineActivity::class.java)
+                i.putExtra(Config.ARGS_MEDICINE_ALARM, act.gson.toJson(it))
+            }
+        }
+        i.putExtra(Config.ARGS_PATIENT, act.gson.toJson(patient))
+        i.putExtra(Config.ARGS_ACTIVITY_STATUS, Config.VALUE_ACTIVITY_STATUS_READ_ONLY)
+        i.putExtra(Config.ARGS_ALARM, act.gson.toJson(it))
+        startActivity(i)
+    }
 
 }

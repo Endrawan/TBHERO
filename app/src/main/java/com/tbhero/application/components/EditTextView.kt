@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.view_edit_text.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class EditTextView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
     private var timeMills: Long? = null
     constructor(context: Context) : this(context, null)
@@ -75,5 +76,13 @@ class EditTextView(context: Context, attrs: AttributeSet?) : FrameLayout(context
 
     fun getTimeMills(): Long? {
         return timeMills
+    }
+
+    fun setTimeMills(mills: Long?) {
+        val calendar = Calendar.getInstance()
+        if (mills != null) {
+            calendar.timeInMillis = mills
+            updateLabel(calendar)
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.tbhero.application.components
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.FrameLayout
 import com.tbhero.application.R.layout.view_button
 import com.tbhero.application.R.styleable.*
@@ -39,5 +40,9 @@ class ButtonView(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
     fun hideProgress() {
         progressBar.visibility = android.view.View.GONE
         cardView.visibility = android.view.View.VISIBLE
+    }
+
+    fun getButton(): Button {
+        return button
     }
 }

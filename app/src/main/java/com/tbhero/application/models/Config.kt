@@ -15,5 +15,12 @@ class Config {
 
         val ARGS_PATIENT = "patient"
         val ARGS_ALARM = "alarm"
+        val ARGS_MEDICINE_ALARM = "medicine_alarm"
+        val ARGS_ACTIVITY_STATUS = "status"
+        val VALUE_ACTIVITY_STATUS_READ_ONLY = 0
+        val VALUE_ACTIVITY_STATUS_UPDATE = 2
+        val VALUE_ACTIVITY_STATUS_CREATE = 1
+
+        val CHANNEL_ID = "666"
     }
 }

@@ -1,16 +1,29 @@
 package com.tbhero.application.models
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 data class Alarm(
     var id: String? = null,
     var category: Int? = null,
     var dosage: String? = null,
     var desc: String? = null,
-    var time: String? = null,
+    var hour: Int = 5,
+    var minute: Int = 0,
     var repeat: MutableList<Boolean> = mutableListOf(false, false, false, false, false, false, false),
     var name: String? = null,
     var phaseCategory: Int? = null,
     var date: Long? = null
 ) {
+
+    fun getTimeVersion(): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        val locale = Locale("in", "ID")
+        val sdf = SimpleDateFormat("HH:mm", locale)
+        return sdf.format(calendar.time)
+    }
 
     companion object {
         val CATEGORY_FASE_FASE = arrayOf("Fase Awal", "Fase Lanjutan")

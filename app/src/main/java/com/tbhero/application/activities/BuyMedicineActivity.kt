@@ -3,6 +3,7 @@ package com.tbhero.application.activities
 import android.app.Activity
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.ArrayAdapter
 import com.tbhero.application.R
 import com.tbhero.application.R.layout.activity_buy_medicine
@@ -14,21 +15,21 @@ import kotlinx.android.synthetic.main.activity_buy_medicine.*
 
 class BuyMedicineActivity : AppCompatActivity() {
 
-    private val medicineAlarm = Alarm()
+    private var medicineAlarm = Alarm()
     private lateinit var alarm: Alarm
     private lateinit var patient: User
+    private var actStatus = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(activity_buy_medicine)
 
-        alarm = gson.fromJson(intent.getStringExtra(Config.ARGS_ALARM), Alarm::class.java)
-        patient = gson.fromJson(intent.getStringExtra(Config.ARGS_PATIENT), User::class.java)
-
         initView()
         initToolbar()
+        getExtras()
         submit.setOnClickListener {
-            saveAlarm()
+            if (actStatus == Config.VALUE_ACTIVITY_STATUS_CREATE) saveAlarm()
+            else if (actStatus == Config.VALUE_ACTIVITY_STATUS_UPDATE) updateAlarm()
         }
     }
 
@@ -49,19 +50,15 @@ class BuyMedicineActivity : AppCompatActivity() {
         )
         phaseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         phase.getSpinner().adapter = phaseAdapter
-        phase.getSpinner().setSelection(alarm.category!!)
 
-        name.getEditText().setText(patient.name)
+        name.getEditText().isEnabled = false
+        name.getEditText().isFocusable = false
+        name.getEditText().isFocusableInTouchMode = false
+        phase.getSpinner().isEnabled = false
     }
 
     private fun saveAlarm() {
-        medicineAlarm.name = patient.name
-        medicineAlarm.category = Alarm.CATEGORY_BELI_OBAT
-        medicineAlarm.phaseCategory = phase.getSpinner().selectedItemPosition
-        medicineAlarm.date = date.getTimeMills()
-        medicineAlarm.dosage = quantity.getEditText().text.toString()
-        medicineAlarm.desc = desc.getEditText().text.toString()
-
+        verifForm()
         submit.showProgress()
         val medicineRef = db.alarms.child(patient.id!!).push()
         medicineAlarm.id = medicineRef.key
@@ -81,9 +78,64 @@ class BuyMedicineActivity : AppCompatActivity() {
             toast("Gagal menambah alarm beli obat, " + it.message)
             submit.hideProgress()
         }
+    }
 
-        name.getEditText().isEnabled = false
-        phase.getSpinner().isEnabled = false
+    private fun updateAlarm() {
+        verifForm()
+        submit.showProgress()
+        db.alarms.child(patient.id!!).child(medicineAlarm.id!!).setValue(medicineAlarm).addOnSuccessListener {
+            toast("Berhasil Mengubah Data")
+            submit.hideProgress()
+            finish()
+        }.addOnFailureListener {
+            toast("Gagal Mengubah Alarm")
+            submit.hideProgress()
+        }
+    }
+
+    private fun verifForm(): Boolean {
+        medicineAlarm.name = patient.name
+        medicineAlarm.category = Alarm.CATEGORY_BELI_OBAT
+        medicineAlarm.phaseCategory = phase.getSpinner().selectedItemPosition
+        if (date.getTimeMills() != null) medicineAlarm.date = date.getTimeMills()
+        medicineAlarm.dosage = quantity.getEditText().text.toString()
+        medicineAlarm.desc = desc.getEditText().text.toString()
+        return true
+    }
+
+    private fun getExtras() {
+        val alarmVal = intent.getStringExtra(Config.ARGS_ALARM)
+        if (alarmVal != null) alarm = gson.fromJson(alarmVal, Alarm::class.java)
+        patient = gson.fromJson(intent.getStringExtra(Config.ARGS_PATIENT), User::class.java)
+        medicineAlarm = gson.fromJson(intent.getStringExtra(Config.ARGS_MEDICINE_ALARM), Alarm::class.java)
+        actStatus = intent.getIntExtra(Config.ARGS_ACTIVITY_STATUS, Config.VALUE_ACTIVITY_STATUS_CREATE)
+
+        name.getEditText().setText(patient.name)
+        when (actStatus) {
+            Config.VALUE_ACTIVITY_STATUS_CREATE -> {
+                phase.getSpinner().setSelection(alarm.category!!)
+            }
+            Config.VALUE_ACTIVITY_STATUS_UPDATE -> {
+                fillForm()
+                submit.getButton().text = "Update"
+            }
+            Config.VALUE_ACTIVITY_STATUS_READ_ONLY -> {
+                fillForm()
+                date.getEditText().isEnabled = false
+                quantity.getEditText().isEnabled = false
+                quantity.getEditText().isFocusableInTouchMode = false
+                desc.getEditText().isEnabled = false
+                desc.getEditText().isFocusableInTouchMode = false
+                submit.getButton().visibility = View.GONE
+            }
+        }
+    }
+
+    private fun fillForm() {
+        date.setTimeMills(medicineAlarm.date)
+        quantity.getEditText().setText(medicineAlarm.dosage)
+        desc.getEditText().setText(medicineAlarm.desc)
+        phase.getSpinner().setSelection(medicineAlarm.phaseCategory!!)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

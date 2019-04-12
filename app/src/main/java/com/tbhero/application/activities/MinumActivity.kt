@@ -21,7 +21,8 @@ import kotlinx.android.synthetic.main.activity_minum.*
 class MinumActivity : AppCompatActivity() {
 
     private val RC_MEDICINE = 100
-    private val alarm = Alarm()
+    private var alarm = Alarm()
+    private var actStatus: Int = 0
     private val repeatViews: MutableList<CheckBox> = mutableListOf()
     lateinit var patient: User
 
@@ -33,21 +34,34 @@ class MinumActivity : AppCompatActivity() {
 
         initToolbar()
         initView()
+        getExtras()
 
         submit.setOnClickListener {
-            saveAlarm()
-            val i = Intent(this, BuyMedicineActivity::class.java)
-            i.putExtra(Config.ARGS_ALARM, gson.toJson(alarm))
-            i.putExtra(Config.ARGS_PATIENT, intent.getStringExtra(Config.ARGS_PATIENT))
-            startActivityForResult(i, RC_MEDICINE)
-//            toast(gson.toJson(alarm))
-//            finish()
+            if (actStatus == Config.VALUE_ACTIVITY_STATUS_CREATE) {
+                verifForm()
+                val i = Intent(this, BuyMedicineActivity::class.java)
+                i.putExtra(Config.ARGS_MEDICINE_ALARM, gson.toJson(Alarm()))
+                i.putExtra(Config.ARGS_ALARM, gson.toJson(alarm))
+                i.putExtra(Config.ARGS_PATIENT, intent.getStringExtra(Config.ARGS_PATIENT))
+                i.putExtra(Config.ARGS_ACTIVITY_STATUS, Config.VALUE_ACTIVITY_STATUS_CREATE)
+                startActivityForResult(i, RC_MEDICINE)
+            } else if (actStatus == Config.VALUE_ACTIVITY_STATUS_UPDATE) {
+                updateAlarm()
+            }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.auth_menu, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_MEDICINE && resultCode == Activity.RESULT_OK) {
+            finish()
+        }
     }
 
     private fun initToolbar() {
@@ -96,36 +110,85 @@ class MinumActivity : AppCompatActivity() {
         name.getEditText().isEnabled = false
     }
 
-    private fun saveAlarm() {
-        alarm.category = category.getSpinner().selectedItemPosition
-        alarm.desc = desc.getEditText().text.toString().trim()
-        alarm.dosage = dosage.getEditText().text.toString().trim()
-        alarm.name = patient.name
-
-        if (alarm.category == Alarm.CATEGORY_FASE_LANJUTAN) {
-            if (Build.VERSION.SDK_INT < 23)
-                alarm.time = time.currentHour.toString() + ":" + time.currentMinute.toString()
-            else
-                alarm.time = time.hour.toString() + ":" + time.minute.toString()
-
-            alarm.repeat = getRepeatValue()
-
-        } else {
-            alarm.time = "5:00"
-        }
-    }
-
     private fun getRepeatValue(): MutableList<Boolean> {
         val result = mutableListOf<Boolean>()
         for (i in repeatViews) result.add(i.isChecked)
         return result
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun setRepeatValue() {
+        for (i in repeatViews.indices)
+            repeatViews[i].isChecked = alarm.repeat[i]
+    }
 
-        if (requestCode == RC_MEDICINE && resultCode == Activity.RESULT_OK) {
-            finish()
+    private fun clearRepeat() {
+        for (i in repeatViews) i.isChecked = false
+    }
+
+    private fun getExtras() {
+        patient = gson.fromJson(intent.getStringExtra(Config.ARGS_PATIENT), User::class.java)
+        alarm = gson.fromJson(intent.getStringExtra(Config.ARGS_ALARM), Alarm::class.java)
+        actStatus = intent.getIntExtra(Config.ARGS_ACTIVITY_STATUS, Config.VALUE_ACTIVITY_STATUS_CREATE)
+        when (actStatus) {
+            Config.VALUE_ACTIVITY_STATUS_UPDATE -> {
+                fillForm()
+                submit.getButton().text = "Update"
+            }
+            Config.VALUE_ACTIVITY_STATUS_READ_ONLY -> {
+                fillForm()
+                time.isEnabled = false
+                submit.getButton().visibility = View.GONE
+                dosage.getEditText().isEnabled = false
+                desc.getEditText().isEnabled = false
+            }
         }
     }
+
+    private fun fillForm() {
+        category.getSpinner().setSelection(alarm.category!!)
+        dosage.getEditText().setText(alarm.dosage)
+        if (Build.VERSION.SDK_INT < 23) {
+            time.currentHour = alarm.hour
+            time.currentMinute = alarm.minute
+        } else {
+            time.hour = alarm.hour
+            time.minute = alarm.minute
+        }
+        desc.getEditText().setText(alarm.desc)
+        setRepeatValue()
+    }
+
+    private fun updateAlarm() {
+        verifForm()
+        submit.showProgress()
+        db.alarms.child(patient.id!!).child(alarm.id!!).setValue(alarm).addOnSuccessListener {
+            toast("Berhasil Mengubah Data")
+            submit.hideProgress()
+            finish()
+        }.addOnFailureListener {
+            toast("Gagal Mengubah Alarm")
+            submit.hideProgress()
+        }
+    }
+
+    private fun verifForm(): Boolean {
+        alarm.category = category.getSpinner().selectedItemPosition
+        alarm.desc = desc.getEditText().text.toString().trim()
+        alarm.dosage = dosage.getEditText().text.toString().trim()
+        alarm.name = patient.name
+
+        if (Build.VERSION.SDK_INT < 23) {
+            alarm.hour = time.currentHour
+            alarm.minute = time.currentMinute
+        } else {
+            alarm.hour = time.hour
+            alarm.minute = time.minute
+        }
+
+        if (alarm.category == Alarm.CATEGORY_FASE_LANJUTAN) {
+            alarm.repeat = getRepeatValue()
+        }
+        return true
+    }
 }
+

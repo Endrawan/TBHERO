@@ -17,6 +17,12 @@
         <item name="colorAccent">@color/greenDark</item>
     </style>
 
+    <style name="AppTheme.PMO" parent="AppTheme">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryDark">@color/orange</item>
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
     <!-- Toolbar -->
     <style name="AppTheme.Toolbar" parent="AppTheme">
     </style>

@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".activities.MainActivity">
         </activity>
+
+        <receiver android:name=".alarm.AlarmReceiver"/>
     </application>
 
 </manifest>

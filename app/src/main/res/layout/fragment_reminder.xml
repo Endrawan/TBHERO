@@ -24,7 +24,7 @@
                     android:layout_height="wrap_content"
                     android:text="Semoga lekas sembuh, tetap semangat dan jangan lupa minum obat secara teratur sesuai anjuran dokter."
                     android:padding="16dp"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/greenDark"/>
 
         </android.support.v7.widget.CardView>
 
