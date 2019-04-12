@@ -25,6 +25,10 @@ data class Alarm(
         return sdf.format(calendar.time)
     }
 
+    fun getRepeatDayStatus(day: Int): Boolean {
+        return repeat[day]
+    }
+
     companion object {
         val CATEGORY_FASE_FASE = arrayOf("Fase Awal", "Fase Lanjutan")
         val CATEGORY_SUBJECTS = arrayOf("Minum Obat", "Minum Obat Lanjutan", "Beli Obat", "Periksa")
@@ -32,5 +36,12 @@ data class Alarm(
         const val CATEGORY_FASE_LANJUTAN = 1
         const val CATEGORY_BELI_OBAT = 2
         const val CATEGORY_PERIKSA = 3
+        const val DAY_MONDAY = 0
+        const val DAY_TUESDAY = 1
+        const val DAY_WEDNESDAY = 2
+        const val DAY_THURSDAY = 3
+        const val DAY_FRIDAY = 4
+        const val DAY_SATURDAY = 5
+        const val DAY_SUNDAY = 6
     }
 }

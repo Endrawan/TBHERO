@@ -17,6 +17,7 @@ class Config {
         val ARGS_ALARM = "alarm"
         val ARGS_MEDICINE_ALARM = "medicine_alarm"
         val ARGS_ACTIVITY_STATUS = "status"
+        val ARGS_ID = "id"
         val VALUE_ACTIVITY_STATUS_READ_ONLY = 0
         val VALUE_ACTIVITY_STATUS_UPDATE = 2
         val VALUE_ACTIVITY_STATUS_CREATE = 1

@@ -16,6 +16,8 @@ import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.fragments.ChatFragment
 import com.tbhero.application.fragments.ProfileFragment
 import com.tbhero.application.fragments.supervisi.ReminderFragment
+import com.tbhero.application.models.Alarm
+import com.tbhero.application.models.Config
 import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -44,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initToolbar()
         initTabLayout()
-        createAlarm()
     }
 
     private fun initToolbar() {
@@ -82,14 +83,16 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun createAlarm() {
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    private fun createAlarm(value: Int) {
         val notificationIntent = Intent(this, AlarmReceiver::class.java)
-        val broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        notificationIntent.putExtra(Config.ARGS_ALARM, gson.toJson(Alarm()))
+        val broadcast = PendingIntent.getBroadcast(this, value, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.SECOND, 5)
-        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, broadcast)
+        calendar.add(Calendar.SECOND, value)
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, broadcast)
 //        alarmManager.setInexactRepeating(
 //            AlarmManager.RTC_WAKEUP,
 //            calendar.timeInMillis,
