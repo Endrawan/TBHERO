@@ -46,7 +46,7 @@ class PeriksaActivity : AppCompatActivity() {
     }
 
     private fun saveAlarm() {
-        verifForm()
+        if (!verifForm()) return
         submit.showProgress()
         val alarmRef = db.alarms.child(patient.id!!).push()
         alarm.id = alarmRef.key
@@ -61,7 +61,7 @@ class PeriksaActivity : AppCompatActivity() {
     }
 
     private fun updateAlarm() {
-        verifForm()
+        if (!verifForm()) return
         submit.showProgress()
         db.alarms.child(patient.id!!).child(alarm.id!!).setValue(alarm).addOnSuccessListener {
             toast("Berhasil Mengubah Data")
@@ -104,6 +104,10 @@ class PeriksaActivity : AppCompatActivity() {
         alarm.desc = desc.getEditText().text.toString().trim()
         if (date.getTimeMills() != null) alarm.date = date.getTimeMills()
         alarm.name = patient.name
+        if (alarm.date == null) {
+            toast("Tolong masukkan tanggal periksa!")
+            return false
+        }
         return true
     }
 }

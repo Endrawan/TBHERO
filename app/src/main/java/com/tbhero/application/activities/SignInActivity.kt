@@ -9,6 +9,8 @@ import com.tbhero.application.R
 import com.tbhero.application.R.drawable.ic_close_grey_20dp
 import com.tbhero.application.R.layout.activity_sign_in
 import com.tbhero.application.components.AppCompatActivity
+import com.tbhero.application.components.Extension
+import com.tbhero.application.models.Config
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : AppCompatActivity() {
@@ -61,26 +63,33 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
-        signIn.showProgress()
         val emailVal = email.getEditText().text.toString().trim()
         val passwordVal = password.getEditText().text.toString().trim()
+
+        if (!Extension.isEmailValid(emailVal)) {
+            toast("Email yang anda masukkan belum benar")
+            return
+        }
+
+        if (passwordVal.length < Config.MIN_LENGTH_PASSWORD) {
+            toast("Password minimal ${Config.MIN_LENGTH_PASSWORD} Karakter!")
+            return
+        }
+
+        signIn.showProgress()
         auth.signInWithEmailAndPassword(emailVal, passwordVal)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "signInWithEmail:success")
-                    updateUser({
-                        signIn.hideProgress()
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }, {
-                        signIn.hideProgress()
-                    })
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    toast("Username atau password salah!")
+            .addOnSuccessListener {
+                Log.d(TAG, "signInWithEmail:success")
+                updateUser({
                     signIn.hideProgress()
-                }
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }, { signIn.hideProgress() })
+            }.addOnFailureListener {
+                // If sign in fails, display a message to the user.
+                Log.w(TAG, "signInWithEmail:failure", it)
+                toast("Gagal melakukan sign in! ${it.message}")
+                signIn.hideProgress()
             }
     }
 }

@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:editTextInputType="date"
-                    app:editTextDrawableLeft="@drawable/ic_user_grey_16dp"
+                    app:editTextDrawableLeft="@drawable/ic_calendar_grey_16dp"
                     app:editTextHint="Tanggal Pembelian"
                     android:layout_marginBottom="8dp"/>
 

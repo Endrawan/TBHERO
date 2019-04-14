@@ -35,6 +35,7 @@ import java.util.*
 class ReminderFragment : Fragment() {
 
     lateinit var patient: User
+    private val TAG = "ReminderFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,13 +101,17 @@ class ReminderFragment : Fragment() {
         ref.keepSynced(true)
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(data: DataSnapshot) {
+                act.removeActiveAlarm()
                 alarms.clear()
+                val alarmCodes: MutableList<Int> = mutableListOf()
                 for (snapshot in data.children) {
                     val alarm = snapshot.getValue(Alarm::class.java)!!
                     alarms.add(alarm)
                     createAlarm(alarm)
+                    alarmCodes.add(alarm.id.hashCode())
                 }
                 adapter.notifyDataSetChanged()
+                act.writeToSP(Config.SP_ALARM_CODES, act.gson.toJson(alarmCodes))
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -119,21 +124,21 @@ class ReminderFragment : Fragment() {
         lookProfile.setOnClickListener {
 
         }
-        act.db.users.child(act.user.pasienId!!).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                toast("Gagal mengambil data")
-            }
+        if (act.user.pasienId != null) {
+            act.db.users.child(act.user.pasienId!!).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    toast("Gagal mengambil data")
+                }
 
-            override fun onDataChange(data: DataSnapshot) {
-                patient = data.getValue(User::class.java)!!
+                override fun onDataChange(data: DataSnapshot) {
+                    patient = data.getValue(User::class.java)!!
+                    patientName.text = patient.name
+                    pmoMsg.visibility = View.VISIBLE
+                    initPMORecycelerView()
+                }
 
-                patientName.text = patient.name
-                pmoMsg.visibility = View.VISIBLE
-                initPMORecycelerView()
-            }
-
-        })
-
+            })
+        }
     }
 
     private fun initPMORecycelerView() {
@@ -188,12 +193,17 @@ class ReminderFragment : Fragment() {
         val broadcast = PendingIntent.getBroadcast(act, alarm.id.hashCode(), i, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR, alarm.hour)
+        calendar.set(Calendar.HOUR_OF_DAY, alarm.hour)
         calendar.set(Calendar.MINUTE, alarm.minute)
-//        calendar.add(Calendar.SECOND, value)
+
+        val today = Calendar.getInstance()
+        if (calendar.timeInMillis < today.timeInMillis) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+//        Log.d(TAG, "${alarm.id} : ${calendar.timeInMillis}")
+//        Log.d(TAG, "Repeat : ${alarm.repeat}")
 
         val alarmManager = act.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, broadcast)
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
@@ -201,24 +211,5 @@ class ReminderFragment : Fragment() {
             broadcast
         )
     }
-
-//    private fun createAlarm(alarm:Alarm) {
-//        val notificationIntent = Intent(act, AlarmReceiver::class.java)
-//        val broadcast = PendingIntent.getBroadcast(act, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-//
-//        val calendar = Calendar.getInstance()
-//        calendar.set(Calendar.HOUR_OF_DAY, alarm.hour)
-//        calendar.set(Calendar.MINUTE, alarm.minute)
-////        calendar.add(Calendar.SECOND, 10)
-//
-//        val alarmManager = act.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, broadcast)
-////        alarmManager.setInexactRepeating(
-////            AlarmManager.RTC_WAKEUP,
-////            calendar.timeInMillis,
-////            1000 * 60,
-////            broadcast
-////        )
-//    }
 
 }

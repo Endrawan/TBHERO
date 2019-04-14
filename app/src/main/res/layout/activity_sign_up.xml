@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         app:editTextInputType="date"
                         app:editTextHint="Tanggal Lahir"
-                        app:editTextDrawableLeft="@drawable/ic_user_grey_16dp"
+                        app:editTextDrawableLeft="@drawable/ic_confetti_grey_16dp"
                         android:layout_marginBottom="8dp"/>
 
                 <com.tbhero.application.components.EditTextView
@@ -83,7 +83,7 @@
                         android:layout_height="wrap_content"
                         app:editTextInputType="numberSigned"
                         app:editTextHint="Berat Badan"
-                        app:editTextDrawableLeft="@drawable/ic_user_grey_16dp"
+                        app:editTextDrawableLeft="@drawable/ic_weight_grey_16dp"
                         android:layout_marginBottom="8dp"/>
 
                 <TextView

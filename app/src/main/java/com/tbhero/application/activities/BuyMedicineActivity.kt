@@ -58,7 +58,7 @@ class BuyMedicineActivity : AppCompatActivity() {
     }
 
     private fun saveAlarm() {
-        verifForm()
+        if (!verifForm()) return
         submit.showProgress()
         val medicineRef = db.alarms.child(patient.id!!).push()
         medicineAlarm.id = medicineRef.key
@@ -81,7 +81,7 @@ class BuyMedicineActivity : AppCompatActivity() {
     }
 
     private fun updateAlarm() {
-        verifForm()
+        if (!verifForm()) return
         submit.showProgress()
         db.alarms.child(patient.id!!).child(medicineAlarm.id!!).setValue(medicineAlarm).addOnSuccessListener {
             toast("Berhasil Mengubah Data")
@@ -100,6 +100,15 @@ class BuyMedicineActivity : AppCompatActivity() {
         if (date.getTimeMills() != null) medicineAlarm.date = date.getTimeMills()
         medicineAlarm.dosage = quantity.getEditText().text.toString()
         medicineAlarm.desc = desc.getEditText().text.toString()
+
+        if (medicineAlarm.date == null) {
+            toast("Tolong masukkan tanggal pembelian!")
+            return false
+        }
+        if (medicineAlarm.dosage!!.isEmpty()) {
+            toast("Tolong masukkan jumlah obat!")
+            return false
+        }
         return true
     }
 

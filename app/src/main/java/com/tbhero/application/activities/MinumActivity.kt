@@ -38,13 +38,14 @@ class MinumActivity : AppCompatActivity() {
 
         submit.setOnClickListener {
             if (actStatus == Config.VALUE_ACTIVITY_STATUS_CREATE) {
-                verifForm()
-                val i = Intent(this, BuyMedicineActivity::class.java)
-                i.putExtra(Config.ARGS_MEDICINE_ALARM, gson.toJson(Alarm()))
-                i.putExtra(Config.ARGS_ALARM, gson.toJson(alarm))
-                i.putExtra(Config.ARGS_PATIENT, intent.getStringExtra(Config.ARGS_PATIENT))
-                i.putExtra(Config.ARGS_ACTIVITY_STATUS, Config.VALUE_ACTIVITY_STATUS_CREATE)
-                startActivityForResult(i, RC_MEDICINE)
+                if (verifForm()) {
+                    val i = Intent(this, BuyMedicineActivity::class.java)
+                    i.putExtra(Config.ARGS_MEDICINE_ALARM, gson.toJson(Alarm()))
+                    i.putExtra(Config.ARGS_ALARM, gson.toJson(alarm))
+                    i.putExtra(Config.ARGS_PATIENT, intent.getStringExtra(Config.ARGS_PATIENT))
+                    i.putExtra(Config.ARGS_ACTIVITY_STATUS, Config.VALUE_ACTIVITY_STATUS_CREATE)
+                    startActivityForResult(i, RC_MEDICINE)
+                }
             } else if (actStatus == Config.VALUE_ACTIVITY_STATUS_UPDATE) {
                 updateAlarm()
             }
@@ -136,6 +137,7 @@ class MinumActivity : AppCompatActivity() {
             }
             Config.VALUE_ACTIVITY_STATUS_READ_ONLY -> {
                 fillForm()
+                category.getSpinner().isEnabled = false
                 time.isEnabled = false
                 submit.getButton().visibility = View.GONE
                 dosage.getEditText().isEnabled = false
@@ -159,7 +161,7 @@ class MinumActivity : AppCompatActivity() {
     }
 
     private fun updateAlarm() {
-        verifForm()
+        if (!verifForm()) return
         submit.showProgress()
         db.alarms.child(patient.id!!).child(alarm.id!!).setValue(alarm).addOnSuccessListener {
             toast("Berhasil Mengubah Data")
@@ -187,6 +189,11 @@ class MinumActivity : AppCompatActivity() {
 
         if (alarm.category == Alarm.CATEGORY_FASE_LANJUTAN) {
             alarm.repeat = getRepeatValue()
+        }
+
+        if (alarm.dosage!!.isEmpty()) {
+            toast("Tolong masukkan dosis obat!")
+            return false
         }
         return true
     }

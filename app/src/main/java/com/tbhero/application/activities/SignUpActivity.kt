@@ -2,7 +2,6 @@ package com.tbhero.application.activities
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.AdapterView
@@ -13,6 +12,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.tbhero.application.R
 import com.tbhero.application.components.AppCompatActivity
+import com.tbhero.application.components.Extension
 import com.tbhero.application.models.Config
 import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -94,47 +94,77 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun verifAndCreate() {
-        signUp.showProgress()
-        val emailVal = email.getEditText().text.toString().trim()
-        val passwordVal = password.getEditText().text.toString().trim()
-
+        val passwordConfirm = confirmPassword.getEditText().text.toString().trim()
         user.category = category.getSpinner().selectedItemPosition
         user.name = name.getEditText().text.toString().trim()
         user.dateBorn = born.getTimeMills()
         user.weight = weight.getEditText().text.toString().toFloatOrNull()
         user.puskesmas = Config.PUSKESMAS_LIST[puskesmas.getSpinner().selectedItemPosition]
         user.phone = phone.getEditText().text.toString().trim()
-        user.email = emailVal
-        user.password = passwordVal
+        user.email = email.getEditText().text.toString().trim()
+        user.password = password.getEditText().text.toString().trim()
 
         if (user.category == User.USER_CATEGORY_PASIEN) {
             user.pmoId = pmos[pmo.getSpinner().selectedItemPosition].id
+
+            if (user.dateBorn == null) {
+                toast("Tolong masukkan tanggal lahir anda!")
+                return
+            }
+
+            if (user.weight == null) {
+                toast("Tolong masukkan berat badan anda!")
+                return
+            }
         }
 
-        auth.createUserWithEmailAndPassword(emailVal, passwordVal).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(TAG, "signInWithEmail:success")
+        if (user.name!!.length < Config.MIN_LENGTH_NAME) {
+            toast("Nama minimal ${Config.MIN_LENGTH_NAME} karakter!")
+            return
+        }
+
+        if (!Extension.isPhoneValid(user.phone)) {
+            toast("Tolong masukkan nomer telepon dengan benar!")
+            return
+        }
+
+        if (!Extension.isEmailValid(user.email)) {
+            toast("Tolong masukkan email dengan benar!")
+            return
+        }
+
+        if (user.password != passwordConfirm) {
+            toast("Password dan konfirmasi password harus sama!")
+            return
+        }
+
+        if (user.password!!.length < Config.MIN_LENGTH_PASSWORD) {
+            toast("Password minimal ${Config.MIN_LENGTH_NAME} karakter!")
+            return
+        }
+
+        signUp.showProgress()
+        auth.createUserWithEmailAndPassword(user.email!!, user.password!!)
+            .addOnSuccessListener {
                 user.id = auth.currentUser?.uid
                 if (user.category == User.USER_CATEGORY_PASIEN)
                     db.users.child(user.pmoId!!).child("pasienId").setValue(user.id)
-                db.users.child(user.id!!).setValue(user).addOnCompleteListener {
-                    if (it.isSuccessful) {
+
+                db.users.child(user.id!!).setValue(user)
+                    .addOnSuccessListener {
+                        signUp.hideProgress()
                         writeUserToSP(user)
                         toast("Berhasil membuat user")
                         setResult(Activity.RESULT_OK)
                         finish()
-                    } else {
+                    }.addOnFailureListener {
+                        signUp.hideProgress()
                         toast("Gagal menambah ke database!")
                     }
-                    signUp.hideProgress()
-                }
-            } else {
-                // If sign in fails, display a message to the user.
-                Log.w(TAG, "signUpWithEmail:failure", task.exception)
-                toast("Authentication Failed!")
+            }.addOnFailureListener {
+                toast("Gagal membuat akun! ${it.message}")
                 signUp.hideProgress()
             }
-        }
     }
 
     private fun getPMO() {

@@ -29,7 +29,6 @@ class AlarmReceiver : BroadcastReceiver() {
         val pendingIntent = stackBuilder.getPendingIntent(alarm.id.hashCode(), PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = Notification.Builder(context)
-
         val notification = builder.setContentTitle("TBHERO")
             .setContentTitle("${alarm.getTimeVersion()} - ${Alarm.CATEGORY_SUBJECTS[alarm.category!!]}")
             .setContentText("${alarm.desc}")
@@ -52,7 +51,8 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        if (isShowedToday(alarm)) notificationManager.notify(alarm.hashCode(), notification)
+        if (isShowedToday(alarm))
+            notificationManager.notify(alarm.id.hashCode(), notification)
     }
 
     private fun isShowedToday(alarm: Alarm): Boolean {

@@ -12,6 +12,7 @@ class Config {
 
         val PREFERENCE_FILE_KEY = "TBHERO"
         val SP_USER = "user"
+        val SP_ALARM_CODES = "alarm_codes"
 
         val ARGS_PATIENT = "patient"
         val ARGS_ALARM = "alarm"
@@ -23,5 +24,10 @@ class Config {
         val VALUE_ACTIVITY_STATUS_CREATE = 1
 
         val CHANNEL_ID = "666"
+
+        val MIN_LENGTH_EMAIL = 6
+        val MIN_LENGTH_PASSWORD = 6
+        val MIN_LENGTH_NAME = 6
+        val MIN_LENGTH_PHONE = 10
     }
 }

@@ -1,10 +1,10 @@
 package com.tbhero.application.activities
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import com.tbhero.application.R
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import com.tbhero.application.components.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_reset_password.*
 
 class ResetPasswordActivity : AppCompatActivity() {
 
@@ -12,6 +12,18 @@ class ResetPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
         initToolbar()
+
+        reset.setOnClickListener {
+            reset.showProgress()
+            auth.sendPasswordResetEmail(email.getEditText().text.toString().trim())
+                .addOnSuccessListener {
+                    toast("Konfirmasi reset email sudah dikirim ke email anda.")
+                    reset.hideProgress()
+                }.addOnFailureListener {
+                    toast("Gagal mengirim konfirmasi reset email! ${it.message}")
+                    reset.hideProgress()
+                }
+        }
     }
 
     private fun initToolbar() {
