@@ -1,8 +1,5 @@
 package com.tbhero.application.activities
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,21 +8,17 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.tbhero.application.R
 import com.tbhero.application.adapters.MainPagerAdapter
-import com.tbhero.application.alarm.AlarmReceiver
 import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.fragments.ChatFragment
-import com.tbhero.application.fragments.ProfileFragment
+import com.tbhero.application.fragments.ContactsFragment
 import com.tbhero.application.fragments.supervisi.ReminderFragment
-import com.tbhero.application.models.Alarm
-import com.tbhero.application.models.Config
 import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val fragments = mutableListOf(ReminderFragment(), ChatFragment(), ProfileFragment())
+    private val fragments = mutableListOf(ReminderFragment(), ChatFragment(), ContactsFragment())
     private val titles = mutableListOf("Reminder", "Chat", "Profile")
     private val icons = arrayOf(
         R.drawable.ic_reminder_white_24dp,
@@ -81,23 +74,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun createAlarm(value: Int) {
-        val notificationIntent = Intent(this, AlarmReceiver::class.java)
-        notificationIntent.putExtra(Config.ARGS_ALARM, gson.toJson(Alarm()))
-        val broadcast = PendingIntent.getBroadcast(this, value, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.SECOND, value)
-
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, broadcast)
-//        alarmManager.setInexactRepeating(
-//            AlarmManager.RTC_WAKEUP,
-//            calendar.timeInMillis,
-//            1000 * 60,
-//            broadcast
-//        )
     }
 }

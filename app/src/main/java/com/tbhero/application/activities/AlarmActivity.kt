@@ -8,14 +8,14 @@ import com.tbhero.application.R.layout.activity_alarm
 import com.tbhero.application.adapters.MainPagerAdapter
 import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.fragments.AlarmsFragment
-import com.tbhero.application.fragments.ProfileFragment
+import com.tbhero.application.fragments.ContactsFragment
 import com.tbhero.application.models.Config
 import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.activity_alarm.*
 
 class AlarmActivity : AppCompatActivity() {
 
-    private val fragments = mutableListOf(AlarmsFragment(), ProfileFragment())
+    private val fragments = mutableListOf(AlarmsFragment(), ContactsFragment())
     private val titles = mutableListOf("Reminder", "Profile")
     private val icons = arrayOf(
         R.drawable.ic_reminder_white_24dp,

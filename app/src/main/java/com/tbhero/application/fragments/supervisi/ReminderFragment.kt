@@ -200,8 +200,6 @@ class ReminderFragment : Fragment() {
         if (calendar.timeInMillis < today.timeInMillis) {
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
-//        Log.d(TAG, "${alarm.id} : ${calendar.timeInMillis}")
-//        Log.d(TAG, "Repeat : ${alarm.repeat}")
 
         val alarmManager = act.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setInexactRepeating(
