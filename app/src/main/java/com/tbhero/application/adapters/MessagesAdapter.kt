@@ -35,7 +35,7 @@ class MessagesAdapter(
             itemView.sentText.text = message.text
 
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis = message.timestamp
+            calendar.timeInMillis = message.timestamp!!
             val format = "EEEE, dd MMMM yyyy HH:mm"
             val locale = Locale("in", "ID")
             val sdf = SimpleDateFormat(format, locale)
@@ -49,7 +49,7 @@ class MessagesAdapter(
             itemView.receivedText.text = message.text
 
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis = message.timestamp
+            calendar.timeInMillis = message.timestamp!!
             val format = "EEEE, dd MMMM yyyy HH:mm"
             val locale = Locale("in", "ID")
             val sdf = SimpleDateFormat(format, locale)

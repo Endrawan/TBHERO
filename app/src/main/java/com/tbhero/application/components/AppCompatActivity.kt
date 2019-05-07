@@ -103,7 +103,7 @@ open class AppCompatActivity : AppCompatActivity() {
         removeFromSP(Config.SP_ALARM_CODES)
     }
 
-    protected fun toast(text: String) {
+    protected fun toast(text: String?) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 

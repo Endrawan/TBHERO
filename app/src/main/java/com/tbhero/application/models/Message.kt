@@ -1,8 +1,9 @@
 package com.tbhero.application.models
 
 data class Message(
-    var id: String,
-    var senderId: String,
-    var text: String,
-    var timestamp: Long
+    var id: String? = null,
+    var senderId: String? = null,
+    var senderName: String? = null,
+    var text: String? = null,
+    var timestamp: Long? = null
 )

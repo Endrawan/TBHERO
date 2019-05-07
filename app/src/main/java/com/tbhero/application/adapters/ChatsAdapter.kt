@@ -19,17 +19,19 @@ class ChatsAdapter(private val chats: MutableList<Chat>, private val action: (Ch
     class ChatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindItem(ctx: Context, chat: Chat, action: (Chat) -> Unit) {
-            itemView.name.text = chat.name
+            itemView.name.text = chat.recipientName
             itemView.recentText.text = chat.recentMessage
             itemView.notification.text = chat.notifCount.toString()
 
 
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis = chat.timestamp
+            calendar.timeInMillis = chat.timestamp!!
             val format = "HH:mm"
             val locale = Locale("in", "ID")
             val sdf = SimpleDateFormat(format, locale)
             itemView.time.text = sdf.format(calendar.time)
+
+            itemView.setOnClickListener { action(chat) }
         }
     }
 
