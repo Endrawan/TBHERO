@@ -1,5 +1,6 @@
 package com.tbhero.application.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -7,6 +8,9 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.tbhero.application.R.layout.activity_message
+import com.tbhero.application.activities.profile_activities.PMOProfileActivity
+import com.tbhero.application.activities.profile_activities.PasienProfileActivity
+import com.tbhero.application.activities.profile_activities.SupervisiProfileActivity
 import com.tbhero.application.adapters.MessagesAdapter
 import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.components.Extension
@@ -42,6 +46,25 @@ class MessageActivity : AppCompatActivity() {
     private fun initView() {
         getCurrentChat()
         name.text = recipient.name
+        name.setOnClickListener {
+            when (recipient.category) {
+                User.USER_CATEGORY_SUPERVISI -> {
+                    val i = Intent(this, SupervisiProfileActivity::class.java)
+                    i.putExtra(Config.ARGS_USER, gson.toJson(recipient))
+                    startActivity(i)
+                }
+                User.USER_CATEGORY_PMO -> {
+                    val i = Intent(this, PMOProfileActivity::class.java)
+                    i.putExtra(Config.ARGS_USER, gson.toJson(recipient))
+                    startActivity(i)
+                }
+                User.USER_CATEGORY_PASIEN -> {
+                    val i = Intent(this, PasienProfileActivity::class.java)
+                    i.putExtra(Config.ARGS_USER, gson.toJson(recipient))
+                    startActivity(i)
+                }
+            }
+        }
 
         adapter = MessagesAdapter(messages, user.id!!) {
 

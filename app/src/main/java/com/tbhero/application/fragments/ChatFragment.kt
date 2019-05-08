@@ -8,11 +8,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-
 import com.tbhero.application.R
 import com.tbhero.application.activities.MessageActivity
 import com.tbhero.application.adapters.ChatsAdapter
@@ -67,34 +65,51 @@ class ChatFragment : Fragment() {
     }
 
     private fun loadChats() {
+//        act.db.getChatsRef(act.user.id!!).orderByChild("reverseTimestamp")
+//            .addChildEventListener(object : ChildEventListener {
+//                override fun onCancelled(p0: DatabaseError) {}
+//
+//                override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
+//
+//                override fun onChildChanged(data: DataSnapshot, prevKey: String?) {
+//                    Log.d(TAG, "$prevKey")
+//                    var position = 0
+//                    if (prevKey == null) chats[0] = data.getValue(Chat::class.java)!!
+//                    else
+//                        for (i in chats.indices)
+//                            if (chats[i].id.equals(prevKey)) {
+//                                chats[i + 1] = data.getValue(Chat::class.java)!!
+//                                position = i + 1
+//                                break
+//                            }
+//                    adapter.notifyItemChanged(position)
+//                }
+//
+//                override fun onChildAdded(data: DataSnapshot, p1: String?) {
+//                    Log.d(TAG, "Chat value = $data")
+//                    val chat = data.getValue(Chat::class.java)!!
+//                    chats.add(chat)
+//                    adapter.notifyItemInserted(chats.size)
+//                }
+//
+//                override fun onChildRemoved(p0: DataSnapshot) {}
+//            })
+
         act.db.getChatsRef(act.user.id!!).orderByChild("reverseTimestamp")
-            .addChildEventListener(object : ChildEventListener {
-                override fun onCancelled(p0: DatabaseError) {}
-
-                override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
-
-                override fun onChildChanged(data: DataSnapshot, prevKey: String?) {
-                    Log.d(TAG, "$prevKey")
-                    var position = 0
-                    if (prevKey == null) chats[0] = data.getValue(Chat::class.java)!!
-                    else
-                        for (i in chats.indices)
-                            if (chats[i].id.equals(prevKey)) {
-                                chats[i + 1] = data.getValue(Chat::class.java)!!
-                                position = i + 1
-                                break
-                            }
-                    adapter.notifyItemChanged(position)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, "Error loading chats: ${error.message}")
                 }
 
-                override fun onChildAdded(data: DataSnapshot, p1: String?) {
-                    Log.d(TAG, "Chat value = $data")
-                    val chat = data.getValue(Chat::class.java)!!
-                    chats.add(chat)
-                    adapter.notifyItemInserted(chats.size)
+                override fun onDataChange(data: DataSnapshot) {
+                    Log.d(TAG, "Success loading chats: $data")
+                    chats.clear()
+                    data.children.forEach {
+                        chats.add(it.getValue(Chat::class.java)!!)
+                    }
+                    adapter.notifyDataSetChanged()
                 }
 
-                override fun onChildRemoved(p0: DataSnapshot) {}
             })
     }
 

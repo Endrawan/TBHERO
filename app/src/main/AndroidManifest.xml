@@ -10,6 +10,12 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".activities.profile_activities.PasienProfileActivity">
+        </activity>
+        <activity android:name=".activities.profile_activities.PMOProfileActivity">
+        </activity>
+        <activity android:name=".activities.profile_activities.SupervisiProfileActivity">
+        </activity>
         <activity android:name=".activities.MessageActivity">
         </activity>
         <activity android:name=".SplashScreenActivity">
