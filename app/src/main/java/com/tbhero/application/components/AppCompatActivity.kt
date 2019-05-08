@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.tbhero.application.R.style.AppTheme_PMO
+import com.tbhero.application.R.style.AppTheme_Pasien
 import com.tbhero.application.alarm.AlarmReceiver
 import com.tbhero.application.firebase.Database
 import com.tbhero.application.models.Config
@@ -35,6 +37,14 @@ open class AppCompatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         SP = getSharedPreferences(Config.PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
         user = getUserFromSP()
+        when (user.category) {
+            User.USER_CATEGORY_PASIEN -> {
+                setTheme(AppTheme_Pasien)
+            }
+            User.USER_CATEGORY_PMO -> {
+                setTheme(AppTheme_PMO)
+            }
+        }
     }
 
     protected fun updateUser(onUserFound: () -> Unit, onUserNotFound: () -> Unit) {

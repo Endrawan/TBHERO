@@ -154,7 +154,7 @@ class MessageActivity : AppCompatActivity() {
 
     private fun getConversation() {
         if (!getMyChatStatus || !getRecipientChatStatus) return
-        toast("Load Complete!")
+//        toast("Load Complete!")
         db.getMessageRef(myChat!!.id!!).addChildEventListener(object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
@@ -228,7 +228,7 @@ class MessageActivity : AppCompatActivity() {
         val ref = db.messages.child(chatId).push()
         message.id = ref.key
         ref.setValue(message).addOnSuccessListener {
-            toast("Berhasil menambah message")
+            //            toast("Berhasil menambah message")
             sendMyChat = false
             sendRecipientChat = false
         }.addOnFailureListener {

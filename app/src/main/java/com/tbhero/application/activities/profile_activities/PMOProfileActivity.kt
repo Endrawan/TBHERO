@@ -20,6 +20,11 @@ class PMOProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(activity_pmo_profile)
 
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = ""
+
         PMO = gson.fromJson(intent.getStringExtra(Config.ARGS_USER), User::class.java)
         name.text = PMO.name
         phone.text = PMO.phone

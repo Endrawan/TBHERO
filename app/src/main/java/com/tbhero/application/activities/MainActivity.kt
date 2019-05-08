@@ -12,14 +12,13 @@ import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.fragments.ChatFragment
 import com.tbhero.application.fragments.ContactsFragment
 import com.tbhero.application.fragments.supervisi.ReminderFragment
-import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
     private val fragments = mutableListOf(ReminderFragment(), ChatFragment(), ContactsFragment())
-    private val titles = mutableListOf("Reminder", "Chat", "Profile")
+    private val titles = mutableListOf("Reminder", "Chat", "Kontak")
     private val icons = arrayOf(
         R.drawable.ic_reminder_white_24dp,
         R.drawable.ic_chat_white_24dp,
@@ -28,14 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        when (user.category) {
-            User.USER_CATEGORY_PASIEN -> {
-                setTheme(R.style.AppTheme_Pasien)
-            }
-            User.USER_CATEGORY_PMO -> {
-                setTheme(R.style.AppTheme_PMO)
-            }
-        }
         setContentView(R.layout.activity_main)
         initToolbar()
         initTabLayout()
