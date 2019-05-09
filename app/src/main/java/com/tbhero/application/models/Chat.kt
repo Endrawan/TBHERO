@@ -17,5 +17,7 @@ data class Chat(
         recentMessage = message.text
         timestamp = message.timestamp
         reverseTimestamp = -1 * timestamp!!
+
+        if (recipientId == senderId) notifCount = notifCount?.plus(1)
     }
 }

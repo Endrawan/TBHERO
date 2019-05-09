@@ -82,6 +82,34 @@ class ContactsFragment : Fragment() {
             }
 
         })
+
+        act.db.users.orderByChild("category").equalTo(User.USER_CATEGORY_SUPERVISI.toDouble())
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(TAG, "Get supervisi error - ${error.message}")
+                }
+
+                override fun onDataChange(data: DataSnapshot) {
+                    Log.d(TAG, "Get supervisi success = $data")
+                    data.children.forEach {
+                        val supervisi = it.getValue(User::class.java)!!
+                        var found = false
+                        for (i in contacts.indices) {
+                            if (supervisi.id == contacts[i].id) {
+                                found = true
+                                contacts[i] = supervisi
+                                adapter.notifyItemChanged(i)
+                                break
+                            }
+                        }
+                        if (!found) {
+                            contacts.add(supervisi)
+                            adapter.notifyItemInserted(contacts.size - 1)
+                        }
+                    }
+                }
+
+            })
     }
 
     private fun initPMO() {

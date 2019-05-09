@@ -21,7 +21,11 @@ class ChatsAdapter(private val chats: MutableList<Chat>, private val action: (Ch
         fun bindItem(ctx: Context, chat: Chat, action: (Chat) -> Unit) {
             itemView.name.text = chat.recipientName
             itemView.recentText.text = chat.recentMessage
-            itemView.notification.text = chat.notifCount.toString()
+
+            if (chat.notifCount!! > 0)
+                itemView.notification.text = chat.notifCount.toString()
+            else
+                itemView.notification.visibility = View.GONE
 
 
             val calendar = Calendar.getInstance()

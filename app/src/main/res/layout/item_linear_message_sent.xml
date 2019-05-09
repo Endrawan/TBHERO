@@ -24,7 +24,7 @@
                 android:background="@color/white"
                 app:elevation="4dp"
                 android:layout_gravity="end"
-                app:cardBackgroundColor="@color/colorPrimary">
+                app:cardBackgroundColor="?colorPrimary">
 
             <LinearLayout
                     android:layout_width="match_parent"

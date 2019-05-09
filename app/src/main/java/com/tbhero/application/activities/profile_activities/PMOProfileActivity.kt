@@ -1,5 +1,6 @@
 package com.tbhero.application.activities.profile_activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
@@ -42,6 +43,11 @@ class PMOProfileActivity : AppCompatActivity() {
                 Log.d(TAG, "success loading patient : $data")
                 val patient = data.getValue(User::class.java)
                 pasien.text = patient?.name
+                pasien.setOnClickListener {
+                    val i = Intent(applicationContext, PasienProfileActivity::class.java)
+                    i.putExtra(Config.ARGS_USER, gson.toJson(patient))
+                    startActivity(i)
+                }
             }
 
         })

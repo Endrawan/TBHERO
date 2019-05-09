@@ -18,6 +18,7 @@ import com.tbhero.application.activities.AlarmActivity
 import com.tbhero.application.activities.BuyMedicineActivity
 import com.tbhero.application.activities.MinumActivity
 import com.tbhero.application.activities.PeriksaActivity
+import com.tbhero.application.activities.profile_activities.PasienProfileActivity
 import com.tbhero.application.adapters.AlarmsAdapter
 import com.tbhero.application.adapters.UsersAdapter
 import com.tbhero.application.alarm.AlarmReceiver
@@ -121,9 +122,6 @@ class ReminderFragment : Fragment() {
     }
 
     private fun initPMO() {
-        lookProfile.setOnClickListener {
-
-        }
         if (act.user.pasienId != null) {
             act.db.users.child(act.user.pasienId!!).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -135,6 +133,12 @@ class ReminderFragment : Fragment() {
                     patientName.text = patient.name
                     pmoMsg.visibility = View.VISIBLE
                     initPMORecycelerView()
+
+                    lookProfile.setOnClickListener {
+                        val i = Intent(act, PasienProfileActivity::class.java)
+                        i.putExtra(Config.ARGS_USER, act.gson.toJson(patient))
+                        startActivity(i)
+                    }
                 }
 
             })

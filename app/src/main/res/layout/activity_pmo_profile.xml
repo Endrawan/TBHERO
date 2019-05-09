@@ -144,7 +144,7 @@
                     android:id="@+id/pasien"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?colorPrimary"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
                     app:layout_constraintStart_toEndOf="@id/barrier"

@@ -1,6 +1,7 @@
 package com.tbhero.application.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,8 +12,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 import com.tbhero.application.R.layout.fragment_profile
+import com.tbhero.application.activities.profile_activities.PMOProfileActivity
 import com.tbhero.application.activities.profile_activities.PasienProfileActivity
 import com.tbhero.application.components.Fragment
+import com.tbhero.application.models.Config
 import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -54,6 +57,11 @@ class ProfileFragment : Fragment() {
                 Log.d(TAG, "Success to load PMO = $data")
                 val PMO = data.getValue(User::class.java)
                 pmo.text = PMO?.name
+                pmo.setOnClickListener {
+                    val i = Intent(act, PMOProfileActivity::class.java)
+                    i.putExtra(Config.ARGS_USER, act.gson.toJson(PMO))
+                    startActivity(i)
+                }
             }
 
         })

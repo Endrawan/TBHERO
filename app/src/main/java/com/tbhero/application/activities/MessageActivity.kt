@@ -88,6 +88,8 @@ class MessageActivity : AppCompatActivity() {
                 override fun onChildAdded(data: DataSnapshot, p1: String?) {
                     Log.d(TAG, "My Data value = $data")
                     myChat = data.getValue(Chat::class.java)!!
+                    myChat!!.notifCount = 0
+                    data.ref.setValue(myChat)
                     getMyChatStatus = true
                     getConversation()
                 }
@@ -95,24 +97,6 @@ class MessageActivity : AppCompatActivity() {
                 override fun onChildRemoved(p0: DataSnapshot) {}
 
             })
-
-//        db.getChatsRef(user.id!!).orderByChild("recipientId").equalTo(recipient.id)
-//            .addValueEventListener(object: ValueEventListener{
-//                override fun onCancelled(data: DatabaseError) {
-//
-//                }
-//
-//                override fun onDataChange(data: DataSnapshot) {
-//                    Log.d(TAG, "My Data value = $data")
-//                    data.children.forEach {
-//                        myChat = it.getValue(Chat::class.java)!!
-//                    }
-//                    getMyChatStatus = true
-//                    getConversation()
-//                    if(myChat != null) getConversation()
-//                }
-//
-//            })
 
         db.getChatsRef(recipient.id!!).orderByChild("recipientId").equalTo(user.id)
             .addChildEventListener(object : ChildEventListener {
@@ -132,24 +116,6 @@ class MessageActivity : AppCompatActivity() {
                 override fun onChildRemoved(p0: DataSnapshot) {}
 
             })
-
-//        db.getChatsRef(recipient.id!!).orderByChild("recipientId").equalTo(user.id)
-//            .addValueEventListener(object:ValueEventListener{
-//                override fun onCancelled(p0: DatabaseError) {
-//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//                }
-//
-//                override fun onDataChange(data: DataSnapshot) {
-//                    Log.d(TAG, "Recipient data value = $data")
-//                    data.children.forEach {
-//                        recipientChat = it.getValue(Chat::class.java)!!
-//                    }
-//                    toast(recipientChat?.id)
-//                    getRecipientChatStatus = true
-//                    if(recipientChat != null)getConversation()
-//                }
-//
-//            })
     }
 
     private fun getConversation() {
@@ -193,7 +159,7 @@ class MessageActivity : AppCompatActivity() {
                 user.id!!,
                 user.name!!,
                 text,
-                1,
+                0,
                 timestamp,
                 -1 * timestamp
             )
@@ -219,7 +185,6 @@ class MessageActivity : AppCompatActivity() {
         recipientChatRef.setValue(recipientChat).addOnSuccessListener {
             sendRecipientChat = true
             sendMsgToDB(recipientChat!!.id!!, message)
-
         }
     }
 
