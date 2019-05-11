@@ -132,6 +132,15 @@
                     android:layout_marginBottom="8dp"/>
 
             <com.tbhero.application.components.EditTextView
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextDrawableLeft="@drawable/ic_location_grey_16dp"
+                    app:editTextHint="Alamat"
+                    app:editTextInputType="textMultiLine"
+                    android:layout_marginBottom="8dp"/>
+
+            <com.tbhero.application.components.EditTextView
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -64,7 +64,7 @@
                     android:id="@+id/born"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="6 Januari 1963"
+                    tools:text="6 Januari 1963"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
 
@@ -72,7 +72,7 @@
                     android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Jl Bunga Anggrek 01 RT/RW 001/002"
+                    tools:text="Jl Bunga Anggrek 01 RT/RW 001/002"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
 
@@ -80,7 +80,7 @@
                     android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="082127014950"
+                    tools:text="082127014950"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"/>
 
@@ -88,7 +88,7 @@
                     android:id="@+id/phase"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Fase Awal"
+                    tools:text="Fase Awal"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:layout_marginBottom="16dp"/>

@@ -60,6 +60,9 @@ class EditTextView(context: Context, attrs: AttributeSet?) : FrameLayout(context
                     ).show()
                 }
             }
+            6 -> {
+                editText.inputType = InputType.TYPE_CLASS_TEXT
+            }
         }
     }
 

@@ -2,12 +2,11 @@ package com.tbhero.application.activities.profile_activities
 
 import android.os.Bundle
 import com.tbhero.application.R.layout.activity_supervisi_profile
-import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.models.Config
 import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.activity_supervisi_profile.*
 
-class SupervisiProfileActivity : AppCompatActivity() {
+class SupervisiProfileActivity : ProfileActivity() {
 
     lateinit var supervisi: User
 
@@ -21,9 +20,12 @@ class SupervisiProfileActivity : AppCompatActivity() {
         phone.text = supervisi.phone
         email.text = supervisi.email
 
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = ""
+        initToolbar(toolbar)
+        setChatAction(supervisi)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        refreshMenuItem(supervisi.id!!)
     }
 }

@@ -10,6 +10,7 @@
             <enum name="textEmailAddress" value="3"/>
             <enum name="numberSigned" value="4"/>
             <enum name="date" value="5"/>
+            <enum name="textMultiLine" value="6"/>
         </attr>
     </declare-styleable>
     <declare-styleable name="ButtonView">

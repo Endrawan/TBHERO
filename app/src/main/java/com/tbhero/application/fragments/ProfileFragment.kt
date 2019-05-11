@@ -44,8 +44,14 @@ class ProfileFragment : Fragment() {
         born.text = pasien.dateBorn.toString()
         weight.text = pasien.weight.toString()
         phone.text = pasien.phone
-//        address.text = user.address
+        if (pasien.address == null)
+            address.text = "Alamat tidak ada"
+        else
+            address.text = pasien.address
+
+
 //        phaseLabel = user
+        phaseLabel.visibility = View.GONE
 
 
         act.db.users.child(pasien.pmoId!!).addValueEventListener(object : ValueEventListener {

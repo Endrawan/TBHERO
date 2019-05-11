@@ -83,6 +83,60 @@ class ContactsFragment : Fragment() {
 
         })
 
+        getSupervisiContacts()
+    }
+
+    private fun initPMO() {
+        if (act.user.pasienId != null) {
+            act.db.users.child(act.user.pasienId!!).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(TAG, "Get pasien error - ${error.message}")
+                }
+
+                override fun onDataChange(data: DataSnapshot) {
+                    Log.d(TAG, "Get pasien value : $data")
+                    val pasien = data.getValue(User::class.java)!!
+                    var found = false
+                    for (i in contacts.indices) {
+                        if (pasien.id == contacts[i].id) {
+                            found = true
+                            contacts[i] = pasien
+                            adapter.notifyItemChanged(i)
+                            break
+                        }
+                    }
+                    if (!found) {
+                        contacts.add(pasien)
+                        adapter.notifyItemInserted(contacts.size - 1)
+                    }
+                }
+
+            })
+        }
+
+        getSupervisiContacts()
+    }
+
+    private fun initSupervisi() {
+        val ref = act.db.pasiens
+        ref.keepSynced(true)
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(data: DataSnapshot) {
+                contacts.clear()
+                for (snapshot in data.children) {
+                    val pasien = snapshot.getValue(User::class.java)!!
+                    contacts.add(pasien)
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                toast("Gagal mengambil data")
+            }
+        })
+    }
+
+    private fun getSupervisiContacts() {
         act.db.users.orderByChild("category").equalTo(User.USER_CATEGORY_SUPERVISI.toDouble())
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -110,52 +164,6 @@ class ContactsFragment : Fragment() {
                 }
 
             })
-    }
-
-    private fun initPMO() {
-        act.db.users.child(act.user.pasienId!!).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Get pasien error - ${error.message}")
-            }
-
-            override fun onDataChange(data: DataSnapshot) {
-                Log.d(TAG, "Get pasien value : $data")
-                val pasien = data.getValue(User::class.java)!!
-                var found = false
-                for (i in contacts.indices) {
-                    if (pasien.id == contacts[i].id) {
-                        found = true
-                        contacts[i] = pasien
-                        adapter.notifyItemChanged(i)
-                        break
-                    }
-                }
-                if (!found) {
-                    contacts.add(pasien)
-                    adapter.notifyItemInserted(contacts.size - 1)
-                }
-            }
-
-        })
-    }
-
-    private fun initSupervisi() {
-        val ref = act.db.pasiens
-        ref.keepSynced(true)
-        ref.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(data: DataSnapshot) {
-                contacts.clear()
-                for (snapshot in data.children) {
-                    val pasien = snapshot.getValue(User::class.java)!!
-                    contacts.add(pasien)
-                }
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                toast("Gagal mengambil data")
-            }
-        })
     }
 
 

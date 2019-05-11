@@ -5,14 +5,13 @@ import com.tbhero.application.R.drawable.ic_reminder_white_24dp
 import com.tbhero.application.R.drawable.ic_user_white_24dp
 import com.tbhero.application.R.layout.activity_pasien_profile
 import com.tbhero.application.adapters.MainPagerAdapter
-import com.tbhero.application.components.AppCompatActivity
 import com.tbhero.application.fragments.ProfileFragment
 import com.tbhero.application.fragments.StatisticsFragment
 import com.tbhero.application.models.Config
 import com.tbhero.application.models.User
 import kotlinx.android.synthetic.main.activity_pasien_profile.*
 
-class PasienProfileActivity : AppCompatActivity() {
+class PasienProfileActivity : ProfileActivity() {
 
     private val fragments = mutableListOf(ProfileFragment(), StatisticsFragment())
     private val titles = mutableListOf("Profil", "Statistik")
@@ -29,25 +28,24 @@ class PasienProfileActivity : AppCompatActivity() {
 
         pasien = gson.fromJson(intent.getStringExtra(Config.ARGS_USER), User::class.java)
 
-        initToolbar()
+        initToolbar(toolbar)
+        setChatAction(pasien)
         initTabLayout()
         initView()
     }
 
-    private fun initToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = ""
+    override fun onStart() {
+        super.onStart()
+        refreshMenuItem(pasien.id!!)
+    }
+
+    private fun initView() {
+        name.text = pasien.name
     }
 
     private fun initTabLayout() {
         val adapter = MainPagerAdapter(supportFragmentManager, fragments, titles)
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
-    }
-
-    private fun initView() {
-        name.text = pasien.name
     }
 }

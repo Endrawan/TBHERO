@@ -23,6 +23,12 @@ class UsersAdapter(private val users: MutableList<User>, private val action: (Us
 
         fun bindItem(ctx: Context, user: User, action: (User) -> Unit) {
             itemView.name.text = user.name
+            itemView.born.text = user.getBorn()
+            if (user.address == null)
+                itemView.address.text = "Alamat tidak ada"
+            else
+                itemView.address.text = user.address
+            itemView.phone.text = user.phone
             itemView.setOnClickListener { action(user) }
             itemView.expand.setOnClickListener {
                 if (isExpanded) {

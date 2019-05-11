@@ -30,5 +30,6 @@ class Config {
         val MIN_LENGTH_PASSWORD = 6
         val MIN_LENGTH_NAME = 6
         val MIN_LENGTH_PHONE = 10
+        val MIN_LENGTH_ADDRESS = 6
     }
 }

@@ -103,6 +103,12 @@ class SignUpActivity : AppCompatActivity() {
         user.phone = phone.getEditText().text.toString().trim()
         user.email = email.getEditText().text.toString().trim()
         user.password = password.getEditText().text.toString().trim()
+        user.address = address.getEditText().text.toString().trim()
+
+        if (user.category == User.USER_CATEGORY_PASIEN && pmo.getSpinner().selectedItemPosition == -1) {
+            toast("PMO sedang tidak tersedia, silahkan coba lain waktu!")
+            return
+        }
 
         if (user.category == User.USER_CATEGORY_PASIEN) {
             user.pmoId = pmos[pmo.getSpinner().selectedItemPosition].id
@@ -130,6 +136,11 @@ class SignUpActivity : AppCompatActivity() {
 
         if (!Extension.isEmailValid(user.email)) {
             toast("Tolong masukkan email dengan benar!")
+            return
+        }
+
+        if (user.address!!.length < Config.MIN_LENGTH_ADDRESS) {
+            toast("Alamat minimal ${Config.MIN_LENGTH_ADDRESS} karakter!")
             return
         }
 

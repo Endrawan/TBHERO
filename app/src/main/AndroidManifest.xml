@@ -18,7 +18,9 @@
         </activity>
         <activity android:name=".activities.MessageActivity">
         </activity>
-        <activity android:name=".SplashScreenActivity">
+        <activity
+                android:name=".SplashScreenActivity"
+                android:theme="@style/AppTheme.FitsSystem">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
